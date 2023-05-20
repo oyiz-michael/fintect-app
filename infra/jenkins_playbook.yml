@@ -1,0 +1,56 @@
+# infra/jenkins_playbook.yml
+---
+- name: Provision Jenkins server
+  hosts: jenkins_instance
+  become: yes
+  gather_facts: yes
+  vars:
+    jenkins_hostname: jenkins.example.com
+
+  tasks:
+    - name: yum update
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Install OpenJDK 11
+      yum:
+        name: java-11-amazon-corretto.x86_64
+        state: present
+
+    # - name: Set Java 11 as default
+    #   alternatives:
+    #     name: java
+    #     path: /usr/lib/jvm/java-11-openjdk/bin/java
+    
+    - name: Install required packages
+      ansible.builtin.yum:
+        name:
+          - ca-certificates
+        state: latest
+
+    - name: Import Jenkins GPG key
+      ansible.builtin.rpm_key:
+        key: https://pkg.jenkins.io/redhat/jenkins.io.key
+        state: present
+
+    - name: Add Jenkins repository
+      ansible.builtin.yum_repository:
+        name: jenkins
+        description: Jenkins repository
+        baseurl: https://pkg.jenkins.io/redhat
+        gpgkey: https://pkg.jenkins.io/redhat/jenkins.io.key
+        gpgcheck: no
+
+    - name: Install Jenkins
+      yum:
+        name: jenkins
+        state: latest
+      notify: Start Jenkins
+
+  handlers:
+    - name: Start Jenkins
+      systemd:
+        name: jenkins
+        state: started
+        enabled: yes
