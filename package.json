@@ -1,0 +1,28 @@
+{
+  "name": "fintech-sample",
+  "version": "1.0.0",
+  "description": "FIntech-Sample",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/em-nani/FIntech-Sample.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/em-nani/FIntech-Sample/issues"
+  },
+  "homepage": "https://github.com/em-nani/FIntech-Sample#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0"
+  }
+}
